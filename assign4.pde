@@ -2,7 +2,7 @@ final int GAME_START = 0;
 final int GAME_RUN = 1;
 final int GAME_LOSE = 2;
 int gameState;
-float speed = 20;
+float speed = 5;
 
 PImage start2, start1, end2, end1;
 int hp_initial=20;
@@ -27,6 +27,8 @@ int bg1_x,bg1_y;
 int bg2_x,bg2_y;
 int flighter_x,flighter_y;
 int flighter_width=51, flighter_height=51;
+
+PImage[] flame = new PImage[5];
 
 int [] enermy_wave1_lived = { 0,0,0,0,0 };
 int [] enermy_wave2_lived = { 0,0,0,0,0 };
@@ -61,6 +63,10 @@ float [][] enermy_wave3 = {
 
 int EnermyToFlighter;
 int enermy_count;
+
+int currentFlame=0;
+int FrameRate = 100;
+
 void setup () {
   size(640, 480) ;
   background(0);
@@ -89,6 +95,9 @@ void setup () {
   
   x_flood = 200;
   
+  for(int i=0;i<5;i++){
+    flame[i] = loadImage("img/flame"+(i+1)+".png");
+  }
 
   bg1_x = -640;
   bg1_y = 0;
@@ -98,6 +107,7 @@ void setup () {
   gameState = GAME_START;
   
   enermy_count = 0;
+ frameRate(60);
 }
 
 void draw() {
@@ -295,6 +305,13 @@ background(0); // clear scene
             if(flighter_x+flighter_width >= enermy_wave1[i][0] && flighter_x <=  enermy_wave1[i][0]+enermy_width && flighter_y+flighter_height >=  enermy_wave1[i][1] && flighter_y <=  enermy_wave1[i][1]+enermy_height){
               enermy_wave1_lived[i] = 0;
               hp_initial = hp_initial-20;
+              image(flame[currentFlame],enermy_wave1[i][0],enermy_wave1[i][1]);
+              if(frameCount%(FrameRate/10)==0){
+                currentFlame++;
+                if(currentFlame>5){
+                 currentFlame =0;
+                 }     
+              }
             }
           }
         break;
@@ -304,6 +321,13 @@ background(0); // clear scene
             if(flighter_x+flighter_width >= enermy_wave2[i][0] && flighter_x <=  enermy_wave2[i][0]+enermy_width && flighter_y+flighter_height >=  enermy_wave2[i][1] && flighter_y <=  enermy_wave2[i][1]+enermy_height){
               enermy_wave2_lived[i] = 0;
               hp_initial = hp_initial-20;
+              image(flame[currentFlame],enermy_wave2[i][0],enermy_wave2[i][1]);
+              if(frameCount%(FrameRate/10)==0){
+                currentFlame++;
+                if(currentFlame>5){
+                 currentFlame =0;
+                 }     
+              }
             }
           }
         break;
@@ -313,6 +337,13 @@ background(0); // clear scene
             if(flighter_x+flighter_width >= enermy_wave3[i][0] && flighter_x <=  enermy_wave3[i][0]+enermy_width && flighter_y+flighter_height >=  enermy_wave3[i][1] && flighter_y <=  enermy_wave3[i][1]+enermy_height){
               enermy_wave3_lived[i] = 0;
               hp_initial = hp_initial-20;
+              image(flame[currentFlame],enermy_wave3[i][0],enermy_wave3[i][1]);
+              if(frameCount%(FrameRate/10)==0){
+                currentFlame++;
+                if(currentFlame>5){
+                 currentFlame =0;
+                 }     
+              }
             }
           }
         break;
@@ -321,7 +352,7 @@ background(0); // clear scene
         break;
       }
 
-      enermy_x = enermy_x +10;
+      enermy_x = enermy_x +3;
       if(enermy_x>=640){
         enermy_count++;
         enermy_y = floor(random(height-enermy_height));
